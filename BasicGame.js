@@ -8,7 +8,8 @@ var Game = {
 	balloonPosition: {
 		x: 0,
 		y: 50
-	}
+	},
+	backgroundMusic:''
 };
 
 Game.start = function() {
@@ -16,8 +17,11 @@ Game.start = function() {
 	Game.canvasContext = Game.canvas.getContext('2d');
 	Game.balloonSprite = new Image();
 	Game.backgroundSprite = new Image();
+	Game.backgroundMusic = new Audio();
 	Game.balloonSprite.src = 'spr_balloon.png';
 	Game.backgroundSprite.src = 'spr_background.jpg';
+	Game.backgroundMusic.src = 'snd_music.mp3';
+	Game.backgroundMusic.play();
 	window.setTimeout(Game.mainLoop, 500);
 };
 
