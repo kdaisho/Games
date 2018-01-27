@@ -1,71 +1,62 @@
 'use strict';
 
 function handleMouseMove(event) {
-	Game.mousePosition = {
-		x: event.pageX,
-		y: event.pageY
-	};
+    Game.mousePosition = { x: event.pageX, y: event.pageY };
 }
 
 var Game = {
-	canvas: '',
-	canvasContext: '',
-	backgroundSprite: '',
-	balloonSprite: '',
-	mousePosition: {
-		x: 0,
-		y: 0
-	},
-	balloonOrigin: {
-		x: 0,
-		y: 0
-	}
+    canvas: '',
+    canvasContext: '',
+    backgroundSprite: '',
+    cannonBarrelSprite: '',
+    mousePosition: { x: 0, y: 0 },
+    cannonPosition: { x: 72, y: 405 },
+    cannonOrigin: { x: 34, y: 34 },
+    cannonRotation: 0
 };
 
-Game.clearCanvas = function() {
-	Game.canvasContext.clearRect(0, 0, Game.canvas.width, Game.canvas.height);
+Game.clearCanvas = function () {
+    Game.canvasContext.clearRect(0, 0, Game.canvas.width, Game.canvas.height);
 };
 
-Game.drawImage = function(sprite, position, origin) {
-	Game.canvasContext.save();
-	Game.canvasContext.translate(position.x, position.y);
-	Game.canvasContext.drawImage(sprite, 0, 0, sprite.width, sprite.height, -origin.x, -origin.y, sprite.width, sprite.height);
-	Game.canvasContext.restore();
+Game.drawImage = function (sprite, position, rotation, origin) {
+    Game.canvasContext.save();
+    Game.canvasContext.translate(position.x, position.y);
+    Game.canvasContext.rotate(rotation);
+    Game.canvasContext.drawImage(sprite, 0, 0, sprite.width, sprite.height,
+        -origin.x, -origin.y, sprite.width, sprite.height);
+    Game.canvasContext.restore();
 };
 
-Game.start = function() {
-	Game.canvas = document.getElementById('myCanvas');
-	Game.canvasContext = Game.canvas.getContext('2d');
-	document.onmousemove = handleMouseMove;
-	Game.backgroundSprite = new Image();
-	Game.backgroundSprite.src = 'spr_background.jpg';
-	Game.balloonSprite = new Image();
-	Game.balloonSprite.src = 'spr_balloon.png';
-	window.setTimeout(Game.mainLoop, 500);
+Game.start = function () {
+    Game.canvas = document.getElementById('myCanvas');
+    Game.canvasContext = Game.canvas.getContext('2d');
+
+    document.onmousemove = handleMouseMove;
+
+    Game.backgroundSprite = new Image();
+    Game.backgroundSprite.src = 'spr_background.jpg';
+    Game.cannonBarrelSprite = new Image();
+    Game.cannonBarrelSprite.src = 'spr_cannon_barrel.png';
+    window.setTimeout(Game.mainLoop, 500);
 };
 
 document.addEventListener('DOMContentLoaded', Game.start);
 
 Game.mainLoop = function() {
-	Game.clearCanvas();
-	Game.update();
-	Game.draw();
-	window.setTimeout(Game.mainLoop, 1000 / 60);
+    Game.update();
+    Game.draw();
+    window.setTimeout(Game.mainLoop, 1000 / 60);
 };
 
-Game.update = function() {
+Game.update = function () {
+    var opposite = Game.mousePosition.y - Game.cannonPosition.y;
+    var adjacent = Game.mousePosition.x - Game.cannonPosition.x;
+    Game.cannonRotation = Math.atan2(opposite, adjacent);
 };
 
-Game.draw = function() {
-	Game.drawImage(Game.backgroundSprite, { x: 0, y: 0 }, { x: 0, y: 0 });
-	Game.balloonOrigin = {
-		x: Game.balloonSprite.width / 2,
-		y: Game.balloonSprite.height / 2
-	};
-	Game.drawImage(Game.balloonSprite, Game.mousePosition, Game.balloonOrigin);
+Game.draw = function () {
+    Game.clearCanvas();
+    Game.drawImage(Game.backgroundSprite, { x: 0, y: 0 }, 0, { x: 0, y: 0 });
+    Game.drawImage(Game.cannonBarrelSprite, Game.cannonPosition, Game.cannonRotation, Game.cannonOrigin);
 };
-
-
-
-
-
