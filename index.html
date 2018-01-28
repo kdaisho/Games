@@ -15,7 +15,18 @@
 	<canvas id="myCanvas" width="800" height="480"></canvas>
 </div>
 
-<script src="BasicGame.js"></script>
+<script src="LAB.min.js"></script>
+<script>
+	$LAB
+		.script('js/input/Keyboard.js').wait()
+		.script('js/input/Mouse.js').wait()
+		.script('js/Canvas2D.js').wait()
+		.script('js/system/Keys.js').wait()
+		.script('js/Painter.js').wait()
+		.script('js/Cannon.js').wait(function() {
+			Game.start('myCanvas');
+		});
+</script>
 
 </body>
 </html>
