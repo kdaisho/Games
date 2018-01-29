@@ -10,7 +10,7 @@ cannon.init = function() {
 	cannon.rotation = 0;
 };
 
-cannon.handleInput = function() {
+cannon.handleInput = function(delta) {
 	if (Keyboard.keyDown === Keys.R)
 		cannon.currentColor = sprites.cannon_red;
 	else if (Keyboard.keyDown === Keys.G)
@@ -22,7 +22,16 @@ cannon.handleInput = function() {
 	cannon.rotation = Math.atan2(opposite, adjacent);
 };
 
+cannon.update = function (delta) {
+};
+
 cannon.draw = function() {
 	Canvas2D.drawImage(sprites.cannon_barrel, cannon.position, cannon.rotation, cannon.origin);
 	Canvas2D.drawImage(cannon.currentColor, cannon.colorPosition, 0, { x: 0, y: 0 });
+};
+
+cannon.ballPosition = function () {
+	var opposite = Math.sin(cannon.rotation) * sprites.cannon_barrel.width * .6;
+	var adjacent = Math.cos(cannon.rotation) * sprites.cannon_barrel.width * .6;
+	return { x: cannon.position.x + adjacent, y: cannon.position.y + opposite };
 };
