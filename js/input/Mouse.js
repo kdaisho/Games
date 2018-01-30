@@ -1,10 +1,7 @@
 'use strict';
 
 function handleMouseMove(event) {
-	Mouse.position = {
-		x: event.pageX,
-		y: event.pageY
-	};
+	Mouse.position = new Vector2(event.pageX, event.pageY);
 }
 
 function handleMouseDown(event) {
