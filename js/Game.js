@@ -45,7 +45,7 @@ Game_Singleton.prototype.assetLoadingLoop = function() {
 		window.requestAnimationFrame(this.assetLoadingLoop);
 	else {
 		this.init();
-		requestAnimationFrame(this.mainLoop);
+		requestAnimationFrame(Game.mainLoop);
 	}
 };
 
