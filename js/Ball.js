@@ -1,54 +1,54 @@
 'use strict';
 
-var ball = {};
 
-ball.init = function() {
-    ball.position = { x: 0, y: 0 };
-    ball.velocity = { x: 0, y: 0 };
-    ball.origin = { x: 0, y: 0 };
-    ball.currentColor = sprites.ball_red;
-    ball.shooting = false;
+function Ball() {
+	this.position = { x: 0, y: 0 };
+    this.velocity = { x: 0, y: 0 };
+    this.origin = { x: 0, y: 0 };
+    this.currentColor = sprites.ball_red;
+    this.shooting = false;
+}
+
+
+Ball.prototype.handleInput = function(delta) {
+	if (Mouse.leftPressed && !this.shooting) {
+		this.shooting = true;
+		this.velocity.x = (Mouse.position.x - this.position.x) * 1.2;
+		this.velocity.y = (Mouse.position.y - this.position.y) * 1.2;
+	}
 };
 
-ball.handleInput = function(delta) {
-    if (Mouse.leftPressed && !ball.shooting) {
-        ball.shooting = true;
-        ball.velocity.x = (Mouse.position.x - ball.position.x) * 1.2;
-        ball.velocity.y = (Mouse.position.y - ball.position.y) * 1.2;
-    }
+Ball.prototype.update = function(delta) {
+	if (this.shooting) {
+		this.velocity.x *= .99;
+		this.velocity.y += 6;
+		this.position.x += this.velocity.x * delta;
+		this.position.y += this.velocity.y * delta;
+	}
+	else {
+		if (Game.gameWorld.cannon.currentColor === sprites.cannon_red)
+			this.currentColor = sprites.ball_red;
+		else if (Game.gameWorld.cannon.currentColor === sprites.cannon_green)
+			this.currentColor = sprites.ball_green;
+		else
+			this.currentColor = sprites.ball_blue;
+		this.position = Game.gameWorld.cannon.ballPosition();
+		this.position.x -= this.currentColor.width / 2;
+		this.position.y -= this.currentColor.width / 2;
+	}
+	if (Game.gameWorld.isOutsideWorld(this.position)) {
+		console.log('Ball is gone');
+		this.reset();
+	}
 };
 
-ball.update = function(delta) {
-    if (ball.shooting) {
-        ball.velocity.x *= .99;
-        ball.velocity.y += 6;
-        ball.position.x += ball.velocity.x * delta;
-        ball.position.y += ball.velocity.y * delta;
-    }
-    else {
-        if (cannon.currentColor === sprites.cannon_red)
-            ball.currentColor = sprites.ball_red;
-        else if (cannon.currentColor === sprites.cannon_green)
-            ball.currentColor = sprites.ball_green;
-        else
-            ball.currentColor = sprites.ball_blue;
-        ball.position = cannon.ballPosition();
-        ball.position.x -= ball.currentColor.width / 2;
-        ball.position.y -= ball.currentColor.width / 2;
-    }
-    if (painterGameWorld.isOutsideWorld(ball.position)) {
-        console.log('ball is gone');
-        ball.reset();
-    }
+Ball.prototype.reset = function() {
+	this.position = { x: 0, y: 0 };
+	this.shooting = false;
 };
 
-ball.reset = function() {
-    ball.position = { x: 0, y: 0 };
-    ball.shooting = false;
-};
-
-ball.draw = function() {
-    if (!ball.shooting)
-        return;
-    Canvas2D.drawImage(ball.currentColor, ball.position, 0, ball.origin);
+Ball.prototype.draw = function() {
+	if (!this.shooting)
+		return;
+	Canvas2D.drawImage(this.currentColor, this.position, 0, this.origin);
 };

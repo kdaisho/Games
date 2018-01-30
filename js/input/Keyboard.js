@@ -8,11 +8,10 @@ function handleKeyUp(event) {
 	Keyboard.keyDown = -1;
 }
 
-var Keyboard = {
-	keyDown: -1
-};
-
-Keyboard.init = function() {
+function Keyboard_Singleton() {
+	this.keyDow = -1;
 	document.onkeydown = handleKeyDown;
 	document.onkeyup = handleKeyUp;
-};
+}
+
+var Keyboard = new Keyboard_Singleton();
