@@ -1,37 +1,40 @@
 'use strict';
 
-var cannon = {};
+function Cannon() {
+	this.position = { x: 72, y: 405 };
+	this.colorPosition = { x: 55, y: 388 };
+	this.origin = { x: 34, y: 34 };
+	this.currentColor = sprites.cannon_red;
+	this.rotation = 0;
+}
 
-cannon.init = function() {
-	cannon.position = { x: 72, y: 405 };
-	cannon.colorPosition = { x: 55, y: 388 };
-	cannon.origin = { x: 34, y: 34 };
-	cannon.currentColor = sprites.cannon_red;
-	cannon.rotation = 0;
-};
+Cannon.prototype.reset = function() {
+	// this.position = new Vector2(72, 405);
+	this.position = { x: 72, y: 405 };
+}
 
-cannon.handleInput = function(delta) {
+Cannon.prototype.handleInput = function(delta) {
 	if (Keyboard.keyDown === Keys.R)
-		cannon.currentColor = sprites.cannon_red;
+		this.currentColor = sprites.cannon_red;
 	else if (Keyboard.keyDown === Keys.G)
-		cannon.currentColor = sprites.cannon_green;
+		this.currentColor = sprites.cannon_green;
 	else if (Keyboard.keyDown === Keys.B)
-		cannon.currentColor = sprites.cannon_blue;
+		this.currentColor = sprites.cannon_blue;
 	var opposite = Mouse.position.y - this.position.y;
 	var adjacent = Mouse.position.x - this.position.x;
-	cannon.rotation = Math.atan2(opposite, adjacent);
+	this.rotation = Math.atan2(opposite, adjacent);
 };
 
-cannon.update = function (delta) {
+Cannon.prototype.update = function (delta) {
 };
 
-cannon.draw = function() {
-	Canvas2D.drawImage(sprites.cannon_barrel, cannon.position, cannon.rotation, cannon.origin);
-	Canvas2D.drawImage(cannon.currentColor, cannon.colorPosition, 0, { x: 0, y: 0 });
+Cannon.prototype.draw = function() {
+	Canvas2D.drawImage(sprites.cannon_barrel, this.position, this.rotation, this.origin);
+	Canvas2D.drawImage(this.currentColor, this.colorPosition, 0, { x: 0, y: 0 });
 };
 
-cannon.ballPosition = function () {
-	var opposite = Math.sin(cannon.rotation) * sprites.cannon_barrel.width * .6;
-	var adjacent = Math.cos(cannon.rotation) * sprites.cannon_barrel.width * .6;
-	return { x: cannon.position.x + adjacent, y: cannon.position.y + opposite };
+Cannon.prototype.ballPosition = function () {
+	var opposite = Math.sin(this.rotation) * sprites.cannon_barrel.width * .6;
+	var adjacent = Math.cos(this.rotation) * sprites.cannon_barrel.width * .6;
+	return { x: this.position.x + adjacent, y: this.position.y + opposite };
 };

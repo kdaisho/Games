@@ -23,10 +23,12 @@
 		.script('js/Canvas2D.js').wait()
 		.script('js/system/Keys.js').wait()
 		.script('js/Game.js').wait()
-		.script('js/Painter.js').wait()
+
 		.script('js/Cannon.js').wait()
 		.script('js/Ball.js').wait()
-		.script('js/PainterGameWorld.js').wait(function() {
+		.script('js/PaintCan.js').wait()
+		.script('js/PainterGameWorld.js').wait()
+		.script('js/Painter.js').wait(function() {
 			Game.start('myCanvas', 800, 480);
 		});
 </script>
