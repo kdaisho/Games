@@ -51,7 +51,7 @@ gulp.task('reloadHtml', function() {
 
 gulp.task('watchFiles', function() {
 	gulp.watch('index.html', ['reloadHtml']);
-	gulp.watch('BasicGame.js', ['reloadHtml']);
+	gulp.watch('js/*', ['reloadHtml']);
 	// gulp.watch('scss/**/*.scss', ['compileSass']);
 	// gulp.watch(['js/functions.js', 'js/main.js', 'js/data.js', 'js/app.js'], ['concatScripts']); // This was concatScripts instead of minifyScripts
 	livereload.listen({
