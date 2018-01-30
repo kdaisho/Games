@@ -53,9 +53,12 @@ Game_Singleton.prototype.mainLoop = function() {
 	var delta = 1 / 60;
 
 	Game.gameWorld.handleInput(delta);
+	// this.gameWorld.handleInput(delta);
 	Game.gameWorld.update(delta);
 	Canvas2D.clear();
 	Game.gameWorld.draw();
+	// this.gameWorld.draw();
+	// this.gameWorld.draw(.2);
 	Mouse.reset();
 	requestAnimationFrame(Game.mainLoop);
 };
