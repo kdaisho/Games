@@ -1,11 +1,10 @@
 'use strict';
 
-function PaintCan(positionOffset) {
+function PaintCan(xPosition) {
 	this.currentColor = sprites.can_red;
-	this.velocity = { x: 0, y: 0 };
-	this.position = { x: 0, y: 0 };
-	this.origin = { x: 0, y: 0 };
-	this.positionOffset = positionOffset;
+	this.velocity = new Vector2();
+	this.position = new Vector2(xPosition, -200);
+	this.origin = new Vector2();
 	this.reset();
 }
 
@@ -15,13 +14,14 @@ PaintCan.prototype.reset = function() {
 };
 
 PaintCan.prototype.moveToTop = function() {
-	this.position = { x: this.positionOffset, y: -20 };
-	this.velocity = { x: 0, y: 0 };
+	this.position.y = -200;
+	this.velocity = new Vector2();
 };
 
 PaintCan.prototype.update = function(delta) {
-	this.position.x += this.velocity.x * delta;
-	this.position.y += this.velocity.y * delta;
+	this.position.addTo(this.velocity.multiply(delta));
+	// this.position.x += this.velocity.x * delta;
+	// this.position.y += this.velocity.y * delta;
 	if (this.velocity.y === 0 && Math.random() < .01) {
 		this.velocity = this.calculateRandomVelocity();
 		this.currentColor = this.calculateRandomColor();
@@ -38,7 +38,7 @@ PaintCan.prototype.draw = function() {
 };
 
 PaintCan.prototype.calculateRandomVelocity = function() {
-	return { x: 0, y: Math.random() * 30 + this.minVelocity };
+	return new Vector2(0, Math.random() * 30 + this.minVelocity);
 };
 
 PaintCan.prototype.calculateRandomColor = function() {

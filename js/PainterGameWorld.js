@@ -24,6 +24,7 @@ PainterGameWorld.prototype.update = function(delta) {
 
 PainterGameWorld.prototype.draw = function() {
 	Canvas2D.drawImage(sprites.background, { x: 0, y: 0 }, 0, { x: 0, y: 0 });
+	// Canvas2D.drawImage(sprites.background, new Vector2(), 0, new Vector2()); //can't use Vecotr2 method??
 
 	this.ball.draw();
 	this.cannon.draw();

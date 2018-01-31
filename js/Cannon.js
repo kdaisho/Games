@@ -1,16 +1,15 @@
 'use strict';
 
 function Cannon() {
-	this.position = { x: 72, y: 405 };
-	this.colorPosition = { x: 55, y: 388 };
-	this.origin = { x: 34, y: 34 };
+	this.position = new Vector2(72, 405);
+	this.colorPosition =  new Vector2(55, 388);
+	this.origin =  new Vector2(34, 34);
 	this.currentColor = sprites.cannon_red;
 	this.rotation = 0;
 }
 
 Cannon.prototype.reset = function() {
-	// this.position = new Vector2(72, 405);
-	this.position = { x: 72, y: 405 };
+	this.position = new Vector2(72, 405);
 }
 
 Cannon.prototype.handleInput = function(delta) {
@@ -30,11 +29,11 @@ Cannon.prototype.update = function (delta) {
 
 Cannon.prototype.draw = function() {
 	Canvas2D.drawImage(sprites.cannon_barrel, this.position, this.rotation, this.origin);
-	Canvas2D.drawImage(this.currentColor, this.colorPosition, 0, { x: 0, y: 0 });
+	Canvas2D.drawImage(this.currentColor, this.colorPosition, 0, new Vector2());
 };
 
-Cannon.prototype.ballPosition = function () {
+Cannon.prototype.ballPosition = function() {
 	var opposite = Math.sin(this.rotation) * sprites.cannon_barrel.width * .6;
 	var adjacent = Math.cos(this.rotation) * sprites.cannon_barrel.width * .6;
-	return { x: this.position.x + adjacent, y: this.position.y + opposite };
+	return new Vector2(this.position.x + adjacent, this.position.y + opposite);
 };

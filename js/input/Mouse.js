@@ -18,7 +18,7 @@ function handleMouseUp(event) {
 }
 
 function Mouse_Singleton() {
-	this.position = { x: 0, y: 0 };
+	this.position = new Vector2();
 	this.leftDown = false;
     this.leftPressed = false;
     document.onmousemove = handleMouseMove;

@@ -1,8 +1,8 @@
 'use strict';
 
 function Canvas2D_Singleton() {
-	this.canvas = '';
-	this.canvasContext = '';
+	this.canvas;
+	this.canvasContext;
 }
 
 Canvas2D_Singleton.prototype.init = function(canvasName) {

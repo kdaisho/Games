@@ -10,9 +10,9 @@ var requestAnimationFrame = (function() {
 }());
 
 function Game_Singleton() {
-	this.size = '';
-	this.spriteStillLoading = 0;
-	this.gameWorld = '';
+	this.size;
+	this.spritesStillLoading = 0;
+	this.gameWorld;
 }
 
 Game_Singleton.prototype.start = function(canvasName, x, y) {
@@ -23,7 +23,7 @@ Game_Singleton.prototype.start = function(canvasName, x, y) {
 };
 
 Game_Singleton.prototype.init = function() {
-	this.gameWorld = new PainterGameWorld();
+	// this.gameWorld = new PainterGameWorld();
 };
 
 Game_Singleton.prototype.loadAssets = function() {
@@ -35,16 +35,17 @@ Game_Singleton.prototype.loadSprite = function(imageName) {
 	image.src = imageName;
 	this.spritesStillLoading += 1;
 	image.onload = function() {
-		this.spritesStillLoading -= 1;
+		Game.spritesStillLoading -= 1;
 	};
 	return image;
 };
 
 Game_Singleton.prototype.assetLoadingLoop = function() {
-	if (this.spritesStillLoading > 0)
-		window.requestAnimationFrame(this.assetLoadingLoop);
+	if (!this.spritesStillLoading > 0) {
+		requestAnimationFrame(Game.assetLoadingLoop);
+	}
 	else {
-		this.init();
+		Game.init();
 		requestAnimationFrame(Game.mainLoop);
 	}
 };

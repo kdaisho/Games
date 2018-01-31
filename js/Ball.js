@@ -2,9 +2,9 @@
 
 
 function Ball() {
-	this.position = { x: 0, y: 0 };
-    this.velocity = { x: 0, y: 0 };
-    this.origin = { x: 0, y: 0 };
+	this.position = new Vector2();
+    this.velocity = new Vector2();
+    this.origin = new Vector2();
     this.currentColor = sprites.ball_red;
     this.shooting = false;
 }
@@ -13,8 +13,9 @@ function Ball() {
 Ball.prototype.handleInput = function(delta) {
 	if (Mouse.leftPressed && !this.shooting) {
 		this.shooting = true;
-		this.velocity.x = (Mouse.position.x - this.position.x) * 1.2;
-		this.velocity.y = (Mouse.position.y - this.position.y) * 1.2;
+		this.velocity = Mouse.position.subtract(this.position).multiplyWith(1.2);
+		// this.velocity.x = (Mouse.position.x - this.position.x) * 1.2;
+		// this.velocity.y = (Mouse.position.y - this.position.y) * 1.2;
 	}
 };
 
@@ -22,8 +23,9 @@ Ball.prototype.update = function(delta) {
 	if (this.shooting) {
 		this.velocity.x *= .99;
 		this.velocity.y += 6;
-		this.position.x += this.velocity.x * delta;
-		this.position.y += this.velocity.y * delta;
+		this.position.addTo(this.velocity.multiply(delta));
+		// this.position.x += this.velocity.x * delta;
+		// this.position.y += this.velocity.y * delta;
 	}
 	else {
 		if (Game.gameWorld.cannon.currentColor === sprites.cannon_red)
@@ -32,9 +34,11 @@ Ball.prototype.update = function(delta) {
 			this.currentColor = sprites.ball_green;
 		else
 			this.currentColor = sprites.ball_blue;
-		this.position = Game.gameWorld.cannon.ballPosition();
-		this.position.x -= this.currentColor.width / 2;
-		this.position.y -= this.currentColor.width / 2;
+		var center = new Vector2(this.currentColor.width / 2, this.currentColor.height / 2);
+
+		this.position = Game.gameWorld.cannon.ballPosition().subtractFrom(center);
+		// this.position.x -= this.currentColor.width / 2;
+		// this.position.y -= this.currentColor.height / 2;
 	}
 	if (Game.gameWorld.isOutsideWorld(this.position)) {
 		console.log('Ball is gone');
@@ -43,7 +47,7 @@ Ball.prototype.update = function(delta) {
 };
 
 Ball.prototype.reset = function() {
-	this.position = { x: 0, y: 0 };
+	this.position = new Vector2();
 	this.shooting = false;
 };
 
