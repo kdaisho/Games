@@ -5,6 +5,27 @@ function Vector2(x, y) {
 	this.y = typeof y !== 'undefined' ? y : 0;
 }
 
+Object.defineProperty(Vector2, 'zero',
+	{
+		get: function() {
+			return new Vector2();
+		}
+	});
+
+Object.defineProperty(Vector2.prototype, 'isZero',
+	{
+		get: function() {
+			return this.x === 0 && this.y === 0;
+		}
+	});
+
+Object.defineProperty(Vector2.prototype, 'length',
+	{
+		get: function() {
+			return Math.sqrt(this.x * this.x + this.y * this.y);
+		}
+	});
+
 Vector2.prototype.addTo = function(v) {
 	if (v.constructor === Vector2) {
 		this.x += v.x;

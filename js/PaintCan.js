@@ -2,11 +2,59 @@
 
 function PaintCan(xPosition) {
 	this.currentColor = sprites.can_red;
-	this.velocity = new Vector2();
+	this.velocity = Vector2.zero;
 	this.position = new Vector2(xPosition, -200);
-	this.origin = new Vector2();
+	this.origin = Vector2.zero;
 	this.reset();
 }
+
+Object.defineProperty(PaintCan.prototype, 'color',
+	{
+		get: function() {
+			if (this.currentColor === sprites.can_red)
+				return Color.red;
+			else if (this.currentColor === sprites.can_green)
+				return Color.green;
+			else
+				return Color.blue;
+		},
+		set: function(value) {
+			if (value === Color.red)
+				this.currentColor = sprites.can_red;
+			else if (value === Color.green)
+				this.currentColor = sprites.can_green;
+			else if (value === Color.blue)
+				this.currentColor = sprites.can_blue;
+		}
+	});
+
+Object.defineProperty(PaintCan.prototype, 'width',
+	{
+		get: function() {
+			return this.currentColor.width;
+		}
+	});
+
+Object.defineProperty(PaintCan.prototype, 'height',
+	{
+		get: function() {
+			return this.currentColor.height;
+		}
+	});
+
+Object.defineProperty(PaintCan.prototype, 'size',
+	{
+		get: function() {
+			return new Vector2(this.currentColor.width, this.currentColor.height);
+		}
+	});
+
+Object.defineProperty(PaintCan.prototype, 'center',
+	{
+		get: function() {
+			return new Vector2(this.currentColor.width / 2, this.currentColor.height / 2);
+		}
+	});
 
 PaintCan.prototype.reset = function() {
 	this.moveToTop();
@@ -15,7 +63,7 @@ PaintCan.prototype.reset = function() {
 
 PaintCan.prototype.moveToTop = function() {
 	this.position.y = -200;
-	this.velocity = new Vector2();
+	this.velocity = Vector2.zero;
 };
 
 PaintCan.prototype.update = function(delta) {
@@ -24,7 +72,16 @@ PaintCan.prototype.update = function(delta) {
 	// this.position.y += this.velocity.y * delta;
 	if (this.velocity.y === 0 && Math.random() < .01) {
 		this.velocity = this.calculateRandomVelocity();
-		this.currentColor = this.calculateRandomColor();
+		this.color = this.calculateRandomColor();
+	}
+
+	// calculate the distance between this can and the ball
+	var ball = Game.gameWorld.ball;
+	var distance = ball.position.add(ball.center).subtractFrom(this.position).subtractFrom(this.center);
+
+	if (Math.abs(distance.x) < this.center.x && Math.abs(distance.y) < this.center.y) {
+		this.color = ball.color;
+		ball.reset();
 	}
 
 	if (Game.gameWorld.isOutsideWorld(this.position))
@@ -34,7 +91,7 @@ PaintCan.prototype.update = function(delta) {
 };
 
 PaintCan.prototype.draw = function() {
-	Canvas2D.drawImage(this.currentColor, this.position, 0, this.origin);
+	Canvas2D.drawImage(this.currentColor, this.position, this.rotation, this.origin);
 };
 
 PaintCan.prototype.calculateRandomVelocity = function() {
@@ -44,9 +101,9 @@ PaintCan.prototype.calculateRandomVelocity = function() {
 PaintCan.prototype.calculateRandomColor = function() {
 	var randomVal = Math.floor(Math.random() * 3);
 	if(randomVal === 0)
-		return sprites.can_red;
+		return Color.red;
 	else if (randomVal === 1)
-		return sprites.can_green;
+		return Color.green;
 	else
-		return sprites.can_blue;
+		return Color.blue;
 };

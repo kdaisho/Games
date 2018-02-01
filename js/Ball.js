@@ -1,14 +1,60 @@
 'use strict';
 
-
 function Ball() {
-	this.position = new Vector2();
-    this.velocity = new Vector2();
-    this.origin = new Vector2();
-    this.currentColor = sprites.ball_red;
-    this.shooting = false;
+	this.currentColor = sprites.ball_red;
+	this.velocity = Vector2.zero;
+	this.position = Vector2.zero;
+	this.origin = Vector2.zero;
+	this.shooting = false;
 }
 
+Object.defineProperty(Ball.prototype, 'color',
+	{
+		get: function() {
+			if (this.currentColor === sprites.ball_red)
+				return Color.red;
+			else if (this.currentColor === sprites.ball_green)
+				return Color.green;
+			else
+				return Color.blue;
+		},
+		set: function(value) {
+			if (value === Color.red)
+				this.currentColor = sprites.ball_red;
+			else if (value === Color.green)
+				this.currentColor = sprites.ball_green;
+			else
+				this.currentColor = sprites.ball_blue;
+		}
+	});
+
+Object.defineProperty(Ball.prototype, 'width',
+	{
+		get: function() {
+			return this.currentColor.width;
+		}
+	});
+
+Object.defineProperty(Ball.prototype, 'height',
+	{
+		get: function() {
+			return this.currentColor.height;
+		}
+	});
+
+Object.defineProperty(Ball.prototype, 'size',
+	{
+		get: function() {
+			return new Vector2(this.currentColor.width, this.currentColor.height);
+		}
+	});
+
+Object.defineProperty(Ball.prototype, 'center',
+	{
+		get: function() {
+			return new Vector2(this.currentColor.width / 2, this.currentColor.height / 2);
+		}
+	});
 
 Ball.prototype.handleInput = function(delta) {
 	if (Mouse.leftPressed && !this.shooting) {
@@ -28,26 +74,15 @@ Ball.prototype.update = function(delta) {
 		// this.position.y += this.velocity.y * delta;
 	}
 	else {
-		if (Game.gameWorld.cannon.currentColor === sprites.cannon_red)
-			this.currentColor = sprites.ball_red;
-		else if (Game.gameWorld.cannon.currentColor === sprites.cannon_green)
-			this.currentColor = sprites.ball_green;
-		else
-			this.currentColor = sprites.ball_blue;
-		var center = new Vector2(this.currentColor.width / 2, this.currentColor.height / 2);
-
-		this.position = Game.gameWorld.cannon.ballPosition().subtractFrom(center);
-		// this.position.x -= this.currentColor.width / 2;
-		// this.position.y -= this.currentColor.height / 2;
+		this.color = Game.gameWorld.cannon.color;
+		this.position = Game.gameWorld.cannon.ballPosition.subtractFrom(this.center);
 	}
-	if (Game.gameWorld.isOutsideWorld(this.position)) {
-		console.log('Ball is gone');
+	if (Game.gameWorld.isOutsideWorld(this.position))
 		this.reset();
-	}
 };
 
 Ball.prototype.reset = function() {
-	this.position = new Vector2();
+	this.position = Vector2.zero;
 	this.shooting = false;
 };
 
