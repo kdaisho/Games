@@ -1,6 +1,6 @@
 'use strict';
 
-function PaintCan(xPosition) {
+function PaintCan(xPosition, targetColor) {
 	this.currentColor = sprites.can_red;
 	this.velocity = Vector2.zero;
 	this.position = new Vector2(xPosition, -200);
@@ -68,8 +68,7 @@ PaintCan.prototype.moveToTop = function() {
 
 PaintCan.prototype.update = function(delta) {
 	this.position.addTo(this.velocity.multiply(delta));
-	// this.position.x += this.velocity.x * delta;
-	// this.position.y += this.velocity.y * delta;
+
 	if (this.velocity.y === 0 && Math.random() < .01) {
 		this.velocity = this.calculateRandomVelocity();
 		this.color = this.calculateRandomColor();
@@ -85,6 +84,8 @@ PaintCan.prototype.update = function(delta) {
 	}
 
 	if (Game.gameWorld.isOutsideWorld(this.position))
+		if (this.color !== this.targetColor)
+			Game.gameWorld.lives -= 1;
 		this.moveToTop();
 
 	this.minVelocity += .01;

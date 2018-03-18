@@ -4,17 +4,27 @@ function PainterGameWorld() {
 	this.cannon = new Cannon();
 	this.ball = new Ball();
 
-	this.can1 = new PaintCan(450);
-	this.can2 = new PaintCan(575);
-	this.can3 = new PaintCan(700);
+	this.can1 = new PaintCan(450, Color.red);
+	this.can2 = new PaintCan(575, Color.green);
+	this.can3 = new PaintCan(700, Color.blue);
+
+	this.lives = 5;
 }
 
 PainterGameWorld.prototype.handleInput = function(delta) {
-	this.ball.handleInput(delta);
-	this.cannon.handleInput(delta);
+	if (this.lives > 0) {
+		this.ball.handleInput(delta);
+		this.cannon.handleInput(delta);
+	}
+	else {
+		if (Mouse.leftPressed)
+			this.reset();
+	}
 };
 
 PainterGameWorld.prototype.update = function(delta) {
+	if (this.lives <= 0)
+		return;
 	this.ball.update(delta);
 	this.cannon.update(delta);
 	this.can1.update(delta);
@@ -30,11 +40,19 @@ PainterGameWorld.prototype.draw = function() {
 	this.can1.draw();
 	this.can2.draw();
 	this.can3.draw();
+	for (var i = 0; i < this.lives; i++) {
+		Canvas2D.drawImage(sprites.lives, new Vector2(i * sprites.lives.width + 15, 60));
+	}
+	if (this.lives <= 0) {
+		console.log("Game over");
+		Canvas2D.drawImage(sprites.gameover, new Vector2(Game.size.x - sprites.gameover.width, Game.size.y - sprites.gameover.height).divideBy(2));
+	}
 };
 
 PainterGameWorld.prototype.reset = function() {
-	this.ball.reset();
+	this.lives = 5;
 	this.cannon.reset();
+	this.ball.reset();
 	this.can1.reset();
 	this.can2.reset();
 	this.can3.reset();
