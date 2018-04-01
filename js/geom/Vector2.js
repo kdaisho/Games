@@ -72,7 +72,7 @@ Vector2.prototype.divideBy = function(v) {
 	return this;
 };
 
-Vector2.prototype.devide = function(v) {
+Vector2.prototype.divide = function(v) {
 	var result = this.copy();
 	return result.divideBy(v);
 };

@@ -17,19 +17,19 @@ PainterGameWorld.prototype.handleInput = function(delta) {
 		this.cannon.handleInput(delta);
 	}
 	else {
-		if (Mouse.leftPressed)
+		if (Mouse.leftPressed || Touch.pressed)
 			this.reset();
 	}
 };
 
 PainterGameWorld.prototype.update = function(delta) {
-	if (this.lives <= 0)
-		return;
-	this.ball.update(delta);
-	this.cannon.update(delta);
-	this.can1.update(delta);
-	this.can2.update(delta);
-	this.can3.update(delta);
+	if (this.lives > 0) {
+		this.ball.update(delta);
+		this.cannon.update(delta);
+		this.can1.update(delta);
+		this.can2.update(delta);
+		this.can3.update(delta);
+	}
 };
 
 PainterGameWorld.prototype.draw = function() {
@@ -43,13 +43,14 @@ PainterGameWorld.prototype.draw = function() {
 	for (var i = 0; i < this.lives; i++) {
 		Canvas2D.drawImage(sprites.lives, new Vector2(i * sprites.lives.width + 15, 60));
 	}
-	if (this.lives <= 0) {
-		console.log("Game over");
-		Canvas2D.drawImage(sprites.gameover, new Vector2(Game.size.x - sprites.gameover.width, Game.size.y - sprites.gameover.height).divideBy(2));
-	}
+	if (this.lives <= 0)
+		Canvas2D.drawImage(sprites.gameover,
+			new Vector2(Game.size.x - sprites.gameover.width,
+				Game.size.y - sprites.gameover.height).divideBy(2));
 };
 
 PainterGameWorld.prototype.reset = function() {
+	this.score = 0;
 	this.lives = 5;
 	this.cannon.reset();
 	this.ball.reset();

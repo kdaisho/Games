@@ -5,7 +5,7 @@ var sounds = {};
 
 Game.loadAssets = function() {
 	var loadSprite = function(sprite) {
-		return Game.loadSprite('./assets/Painter/sprites/' + sprite);
+		return Game.loadSprite('../assets/Painter/sprites/' + sprite);
 	};
 
 	sprites.background = loadSprite('spr_background.jpg');

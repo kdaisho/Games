@@ -3,6 +3,8 @@
 var requestAnimationFrame = (function() {
 	return window.requestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		window.oRequestAnimationFrame ||
 		window.msRequestAnimationFrame ||
 		function(callback) {
 			window.setTimeout(callback, 1000 / 60);
@@ -10,19 +12,10 @@ var requestAnimationFrame = (function() {
 }());
 
 function Game_Singleton() {
-	console.log('Creating game');
-	this._totalTime = 0;
 	this._size = null;
 	this._spritesStillLoading = 0;
 	this.gameWorld = null;
 }
-
-Object.defineProperty(Game_Singleton.prototype, 'totalTime',
-	{
-		get: function() {
-			return this._totalTime;
-		}
-	});
 
 Object.defineProperty(Game_Singleton.prototype, 'size',
 	{
@@ -68,7 +61,6 @@ Game_Singleton.prototype.assetLoadingLoop = function() {
 
 Game_Singleton.prototype.mainLoop = function() {
 	var delta = 1 / 60;
-	Game._totalTime += delta;
 
 	Game.gameWorld.handleInput(delta);
 	Game.gameWorld.update(delta);
@@ -80,3 +72,4 @@ Game_Singleton.prototype.mainLoop = function() {
 };
 
 var Game = new Game_Singleton();
+

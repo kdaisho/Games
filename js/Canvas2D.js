@@ -20,9 +20,10 @@ Canvas2D_Singleton.prototype.clear = function() {
 	this._canvasContext.clearRect(0, 0, this._canvas.width, this._canvas.height);
 };
 
-Canvas2D_Singleton.prototype.drawImage = function(sprite, position, rotation, origin) {
+Canvas2D_Singleton.prototype.drawImage = function(sprite, position, rotation, scale,  origin) {
 	position = typeof position !== 'undefined' ? position : Vector2.zero;
 	rotation = typeof rotation !== 'undefined' ? rotation : 0;
+	scale = typeof scale !== 'undefined' ? scale : 1;
 	origin = typeof origin !== 'undefined' ? origin : Vector2.zero;
 
 	this._canvasContext.save();
@@ -30,8 +31,8 @@ Canvas2D_Singleton.prototype.drawImage = function(sprite, position, rotation, or
 	this._canvasContext.rotate(rotation);
 	this._canvasContext.drawImage(sprite, 0, 0,
 		sprite.width, sprite.height,
-		-origin.x, -origin.y,
-		sprite.width, sprite.height);
+		-origin.x * scale, -origin.y * scale,
+		sprite.width, sprite.height * scale);
 	this._canvasContext.restore();
 };
 

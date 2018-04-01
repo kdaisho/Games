@@ -43,5 +43,5 @@ var Keys = {
 	add: 43,
 	subtract: 45,
 	decimal: 46,
-	devide: 47
+	divide: 47
 };
