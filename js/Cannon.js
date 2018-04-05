@@ -17,6 +17,7 @@ Object.defineProperty(Cannon.prototype, 'ballPosition',
 		}
 	});
 
+
 Cannon.prototype.reset = function() {
 	this.position = new Vector2(72, 405);
 };

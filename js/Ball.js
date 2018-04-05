@@ -12,14 +12,15 @@ Ball.prototype.handleInput = function(delta) {
 	if (Mouse.leftPressed && !this.shooting) {
 		this.shooting = true;
 		this.velocity = Mouse.position.subtract(this.position).multiplyWith(1.2);
+		sounds.shoot_paint.play();
 	}
 };
 
 Ball.prototype.update = function(delta) {
-	ThreeColorGameObject.prototype.update.call(this, delta);
 	if (this.shooting) {
 		this.velocity.x *= .99;
 		this.velocity.y += 6;
+		ThreeColorGameObject.prototype.update.call(this, delta);
 	}
 	else {
 		this.color = Game.gameWorld.cannon.color;

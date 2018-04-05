@@ -8,6 +8,7 @@ function PainterGameWorld() {
 	this.can2 = new PaintCan(575, Color.green);
 	this.can3 = new PaintCan(700, Color.blue);
 
+	this.score = 0;
 	this.lives = 5;
 }
 
@@ -34,6 +35,8 @@ PainterGameWorld.prototype.update = function(delta) {
 
 PainterGameWorld.prototype.draw = function() {
 	Canvas2D.drawImage(sprites.background);
+	Canvas2D.drawImage(sprites.scorebar, new Vector2(10, 10));
+	Canvas2D.drawText('Score: ' + this.score, new Vector2(20, 22), Color.white);
 
 	this.ball.draw();
 	this.cannon.draw();

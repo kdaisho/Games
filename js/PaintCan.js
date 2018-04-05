@@ -38,11 +38,16 @@ PaintCan.prototype.update = function(delta) {
 	}
 
 	if (Game.gameWorld.isOutsideWorld(this.position)) {
-		if (this.color !== this.targetColor)
+		if (this.color === this.targetColor) {
+			Game.gameWorld.score += 10;
+			sounds.collect_points.play();
+		}
+		else
 			Game.gameWorld.lives -= 1;
 		this.moveToTop();
 	}
 	this.minVelocity += .01;
+	this.rotation = Math.sin(this.position.y / 50) * .05;
 };
 
 PaintCan.prototype.calculateRandomVelocity = function() {
@@ -50,10 +55,10 @@ PaintCan.prototype.calculateRandomVelocity = function() {
 };
 
 PaintCan.prototype.calculateRandomColor = function() {
-	var randomVal = Math.floor(Math.random() * 3);
-	if(randomVal === 0)
+	var randomval = Math.floor(Math.random() * 3);
+	if(randomval === 0)
 		return Color.red;
-	else if (randomVal === 1)
+	else if (randomval === 1)
 		return Color.green;
 	else
 		return Color.blue;

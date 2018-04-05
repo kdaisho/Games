@@ -36,4 +36,21 @@ Canvas2D_Singleton.prototype.drawImage = function(sprite, position, rotation, sc
 	this._canvasContext.restore();
 };
 
+Canvas2D_Singleton.prototype.drawText = function(text, position, color, textAlign, fontname, fontsize) {
+	position = typeof position !== 'undefined' ? position : Vector2.zero;
+	color = typeof color !== 'undefined' ? color : Color.black;
+	textAlign = typeof textAlign !== 'undefined' ? textAlign : 'top';
+	fontname = typeof fontname !== 'undefined' ? fontname : 'Courier New';
+	fontsize = typeof fontsize !== 'undefined' ? fontsize : '20px';
+	
+	this._canvasContext.save();
+	this._canvasContext.translate(position.x, position.y);
+	this._canvasContext.textBaseline = 'top';
+	this._canvasContext.font = fontsize + ' ' + fontname;
+	this._canvasContext.fillStyle = color.toString();
+	this._canvasContext.textAlign = textAlign;
+	this._canvasContext.fillText(text, 0, 0);
+	this._canvasContext.restore();
+}
+
 var Canvas2D = new Canvas2D_Singleton();

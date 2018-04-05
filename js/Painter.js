@@ -8,7 +8,12 @@ Game.loadAssets = function() {
 		return Game.loadSprite('../assets/Painter/sprites/' + sprite);
 	};
 
+	var loadSound = function(sound, looping) {
+		return new Sound('../assets/Painter/sounds/' + sound, looping);
+	}
+
 	sprites.background = loadSprite('spr_background.jpg');
+	sprites.scorebar = loadSprite('spr_scorebar.jpg');
 	sprites.cannon_barrel = loadSprite('spr_cannon_barrel.png');
 	sprites.cannon_red = loadSprite('spr_cannon_red.png');
 	sprites.cannon_green = loadSprite('spr_cannon_green.png');
@@ -21,8 +26,17 @@ Game.loadAssets = function() {
 	sprites.can_blue = loadSprite('spr_can_blue.png');
 	sprites.lives = loadSprite('spr_lives.png');
 	sprites.gameover = loadSprite('spr_gameover_click.png');
+
+	sounds.music = loadSound('snd_music');
+	sounds.collect_points = loadSound('snd_collect_points');
+	sounds.shoot_paint = loadSound('snd_shoot_paint');
 };
 
 Game.init = function() {
+	// sound
+	sounds.music.volue = .3;
+	sounds.music.play();
+
+	// create the game world
 	Game.gameWorld = new PainterGameWorld();
 };
